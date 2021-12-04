@@ -5,7 +5,7 @@
         <p class="widget-auth-info">
           Buscar na Lista de Livros
         </p>
-        <form class="mt" @submit.prevent="buscar">
+        <form class="mt">
           <b-alert class="alert-sm" variant="danger" :show="!!errorMessage">
             {{errorMessage}}
           </b-alert>
@@ -18,20 +18,6 @@
                     required
                     placeholder="Nome do Livro / Autor"/>
             </b-input-group>
-            <div class="bg-widget auth-widget-footer mb-1 mt-3">
-                <b-button type="submit" variant="danger" class="auth-btn" size="sm">
-                    Buscar
-                    <span class="auth-btn-circle">
-                    <i class="la la-paper-plane"></i>
-                    </span>
-                </b-button>
-                <b-button type="button" variant="warning" class="auth-btn" size="sm">
-                    Resetar
-                    <span class="auth-btn-circle">
-                    <i class="la la-paper-plane"></i>
-                    </span>
-                </b-button>
-            </div>
         </form>
       </Widget>
       <tables 
@@ -61,6 +47,7 @@ export default {
             pagina: 0,
             btn_anterior: true,
             botoes: true,
+            timer: null
         };
     },
     watch: {
@@ -70,11 +57,18 @@ export default {
             } else {
                 this.btn_anterior = false;
             }
+        },
+        busca(value) {
+            clearTimeout(this.timer);
+            var ms = 1000; // milliseconds
+            this.timer = setTimeout(()=> {
+                this.buscar(value);
+            }, ms);
         }
     },
     methods: {
-        buscar() {
-            var dados = { busca: this.busca};
+        buscar(busca) {
+            var dados = { busca: busca};
             axios.post(this.api + 'livros', dados)
             .then((response) => {
                 console.log(response)

@@ -10,7 +10,7 @@ export default new Vuex.Store({
     layout,
   },
   state: {
-    api: 'http://api-livros.yuri/api/',
+    api: 'http://api-livros.meuapp.net.br/api/',
   },
   getters: {
     getApi: state => {
